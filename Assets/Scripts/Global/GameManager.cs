@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -7,9 +8,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    [SerializeField] private TextMeshProUGUI _maxText;
     public int[,] Numbers = new int[4, 4];
     private int[] _newNumber = new int[10];
-    private int _maxNumber = 1;
+    private int _maxNumber = 0;
     private int _maxCount = 0;
 
     private void Awake()
@@ -39,7 +41,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-
+        _maxText.text = _maxNumber.ToString();
         if(Input.GetMouseButtonDown(0))
         {
             int count = 0;
@@ -57,9 +59,8 @@ public class GameManager : MonoBehaviour
 
             else
             {
-                float x = Input.mousePosition.x;
-                float y = Input.mousePosition.y;
-
+                float x = Input.mousePosition.x - 594;
+                float y = Input.mousePosition.y - 1022;
                 if (System.Math.Abs(x) >= System.Math.Abs(y))
                 {
                     if (x > 0)
@@ -96,27 +97,27 @@ public class GameManager : MonoBehaviour
 
     private void MoveDown()
     {
+        Debug.Log("down");
         for (int j = 0; j < 4; j++)
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 3; i > 0; i--)
             {
-                if ((Numbers[i, j]) != 1)
+                if ((Numbers[i, j]) == 1)
                 {
-                    if ((Numbers[i+1, j]) == 1)
+                    if ((Numbers[i - 1, j]) != 1)
                     {
-                        Numbers[i+1, j] = Numbers[i, j];
-                        Numbers[i, j] = 1;
+                        Numbers[i, j] = Numbers[i - 1, j];
+                        Numbers[i - 1, j] = 1;
                     }
-                    else if (Numbers[i+1, j] == Numbers[i, j])
+                }
+                else if (Numbers[i - 1, j] == Numbers[i, j])
+                {
+                    Numbers[i, j] = Numbers[i - 1, j] + Numbers[i, j];
+                    Numbers[i - 1, j] = 1;
+                    if (Numbers[i, j] > _maxNumber)
                     {
-                        Numbers[i+1, j] = Numbers[i+1, j] + Numbers[i, j];
-                        Numbers[i, j] = 1;
-                        if(Numbers[i + 1, j] > _maxNumber)
-                        {
-                            _maxCount++;
-                            _maxNumber = Numbers[i + 1, j];
-                        }
-
+                        _maxCount++;
+                        _maxNumber = Numbers[i, j];
                     }
                 }
 
@@ -127,26 +128,27 @@ public class GameManager : MonoBehaviour
 
     private void MoveUp()
     {
+        Debug.Log("up");
         for (int j = 0; j < 4; j++)
         {
-            for (int i = 3; i > 0; i--)
+            for (int i = 0; i < 3; i++)
             {
-                if ((Numbers[i, j]) != 1)
+                if ((Numbers[i, j]) == 1)
                 {
-                    if ((Numbers[i - 1, j]) == 1)
+                    if ((Numbers[i+1, j]) != 1)
                     {
-                        Numbers[i - 1, j] = Numbers[i, j];
-                        Numbers[i, j] = 1;
+                        Numbers[i, j] = Numbers[i+1, j];
+                        Numbers[i+1, j] = 1;
                     }
-                    else if (Numbers[i - 1, j] == Numbers[i, j])
+                }
+                else if (Numbers[i+1, j] == Numbers[i, j])
+                {
+                    Numbers[i, j] = Numbers[i+1, j] + Numbers[i, j];
+                    Numbers[i+1, j] = 1;
+                    if (Numbers[i, j] > _maxNumber)
                     {
-                        Numbers[i - 1, j] = Numbers[i - 1, j] + Numbers[i, j];
-                        Numbers[i, j] = 1;
-                        if (Numbers[i - 1, j] > _maxNumber)
-                        {
-                            _maxCount++;
-                            _maxNumber = Numbers[i - 1, j];
-                        }
+                        _maxCount++;
+                        _maxNumber = Numbers[i, j];
                     }
                 }
 
@@ -157,26 +159,27 @@ public class GameManager : MonoBehaviour
 
     private void MoveLeft()
     {
+        Debug.Log("left");
         for (int i = 0; i < 4; i++)
         {
-            for (int j = 3; j > 0; j--)
+            for (int j = 0; j < 3; j++)
             {
-                if ((Numbers[i, j]) != 1)
+                if ((Numbers[i, j]) == 1)
                 {
-                    if ((Numbers[i, j - 1]) == 1)
+                    if ((Numbers[i, j +1]) != 1)
                     {
-                        Numbers[i, j - 1] = Numbers[i, j];
-                        Numbers[i, j] = 1;
+                        Numbers[i, j] = Numbers[i, j + 1];
+                        Numbers[i, j + 1] = 1;
                     }
-                    else if (Numbers[i, j - 1] == Numbers[i, j])
+                }
+                else if (Numbers[i, j + 1] == Numbers[i, j])
+                {
+                    Numbers[i, j] = Numbers[i, j+ 1] + Numbers[i, j];
+                    Numbers[i, j + 1] = 1;
+                    if (Numbers[i, j] > _maxNumber)
                     {
-                        Numbers[i, j - 1] = Numbers[i, j - 1] + Numbers[i, j];
-                        Numbers[i, j] = 1;
-                        if (Numbers[i, j-1] > _maxNumber)
-                        {
-                            _maxCount++;
-                            _maxNumber = Numbers[i, j-1];
-                        }
+                        _maxCount++;
+                        _maxNumber = Numbers[i, j];
                     }
                 }
 
@@ -187,34 +190,40 @@ public class GameManager : MonoBehaviour
 
     private void MoveRight()
     {
-        for(int i=0; i<4; i++)
+        Debug.Log("right");
+        for (int i = 0; i < 4; i++)
         {
-            for(int j=0; j<3; j++)
+            for (int j = 3; j > 0; j--)
             {
-                if ((Numbers[i, j]) != 1)
+                if ((Numbers[i, j]) == 1)
                 {
-                    if ((Numbers[i, j+1]) == 1)
+                    if ((Numbers[i, j - 1]) != 1)
                     {
-                        Numbers[i, j + 1] = Numbers[i, j];
-                        Numbers[i, j] = 1;
-                    }
-                    else if (Numbers[i, j+1] == Numbers[i,j])
-                    {
-                        Numbers[i, j + 1] = Numbers[i, j + 1] + Numbers[i, j];
-                        Numbers[i, j] = 1;
-                        if (Numbers[i, j + 1] > _maxNumber)
-                        {
-                            _maxCount++;
-                            _maxNumber = Numbers[i, j + 1];
-                        }
+                        Numbers[i, j] = Numbers[i, j - 1];
+                        Numbers[i, j - 1] = 1;
                     }
                 }
-                  
+                else if (Numbers[i, j - 1] == Numbers[i, j])
+                {
+                    Numbers[i, j] = Numbers[i, j - 1] + Numbers[i, j];
+                    Numbers[i, j - 1] = 1;
+                    if (Numbers[i, j] > _maxNumber)
+                    {
+                        _maxCount++;
+                        _maxNumber = Numbers[i, j];
+                    }
+                }
+
+
             }
+
+
         }
 
         MakeRandomSlot();
     }
+
+    
 
     private void MakeRandomSlot()
     {

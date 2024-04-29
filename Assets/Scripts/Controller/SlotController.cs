@@ -27,7 +27,7 @@ public class SlotController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonUp(0))
         {
             _number = GameManager.Instance.Numbers[_line, _column];               
              ChangeNumber();
@@ -44,37 +44,37 @@ public class SlotController : MonoBehaviour
                 _image[1].color = new Color(0, 0, 0, 0);
                     break;
             case 2:
-                _image[1].color = new Color(210, 201, 192, 255);
+                _image[1].color = new Color(210f/255f, 201 / 255f, 192 / 255f, 255);
                 break;
             case 4:
-                _image[1].color = new Color(229, 217, 194, 255);
+                _image[1].color = new Color(229f/ 255f, 217f / 255f, 194f / 255f, 255);
                 break;
             case 8:
-                _image[1].color = new Color(228, 165, 113, 225);
+                _image[1].color = new Color(228f/255f, 165f / 255f, 113f / 255f, 225);
                 break;
             case 16:
-                _image[1].color = new Color(238, 143, 96, 225);
+                _image[1].color = new Color(238f / 255f, 143f / 255f, 96f / 255f, 225);
                 break;
             case 32:
-                _image[1].color = new Color(234, 119, 91, 225);
+                _image[1].color = new Color(234f / 255f, 119f / 255f, 91f / 255f, 225);
                 break;
             case 64:
-                _image[1].color = new Color(238, 90, 59, 225);
+                _image[1].color = new Color(238f / 255f, 90f / 255f, 59f / 255f, 225);
                 break;
             case 128:
-                _image[1].color = new Color(227, 198, 108, 225);
+                _image[1].color = new Color(227f / 255f, 198f / 255f, 108f / 255f, 225);
                 break;
             case 256:
-                _image[1].color = new Color(232, 99, 96, 225);
+                _image[1].color = new Color(232f / 255f, 99f / 255f, 96f / 255f, 225);
                 break;
             case 512:
-                _image[1].color = new Color(229, 94, 77, 225);
+                _image[1].color = new Color(229f / 255f, 94f / 255f, 77f / 255f, 225);
                 break;
             case 1024:
-                _image[1].color = new Color(235, 193, 66, 255);
+                _image[1].color = new Color(235f / 255f, 193f / 255f, 66f / 255f, 255);
                 break;
             case 2048:
-                _image[1].color = new Color(230, 191, 61, 225);
+                _image[1].color = new Color(230f / 255f, 191f / 255f, 61f / 255f, 225);
                 break;
             default:
                 _image[1].color = new Color(255, 255, 255, 255);
